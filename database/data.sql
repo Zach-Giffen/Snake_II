@@ -9,3 +9,8 @@
 --      ('Learn to code', false),
 --      ('Build projects', false),
 --      ('Get a job', false);
+
+insert into "users"
+        ("userName", "passwordHash")
+        values
+        ('snakeGod',`'fasfkil;gdfaf');

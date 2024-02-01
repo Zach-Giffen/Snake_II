@@ -1,6 +1,6 @@
-import Snake from "./snake"
+import Snake from './snake';
 
-type Cell = "snake" | "food" | null;
+type Cell = 'snake' | 'food' | null;
 
 export interface Coordinate {
   row: number;
@@ -140,14 +140,14 @@ export class SnakeGameEngine {
     this.gameBoard.forEach((row, rowIndex) => {
       row.forEach((cell, colIndex) => {
         switch (cell) {
-          case "snake":
-            this.context.fillStyle = "#A2C579";
+          case 'snake':
+            this.context.fillStyle = '#39FF14';
             break;
-          case "food":
-            this.context.fillStyle = "salmon";
+          case 'food':
+            this.context.fillStyle = 'red';
             break;
           case null:
-            this.context.fillStyle = "white";
+            this.context.fillStyle = 'black';
             break;
         }
         this.context.fillRect(
@@ -170,13 +170,13 @@ export class SnakeGameEngine {
       };
     }
 
-    this.gameBoard[this.foodCoordinate.row][this.foodCoordinate.col] = "food";
+    this.gameBoard[this.foodCoordinate.row][this.foodCoordinate.col] = 'food';
   }
 
   private setSnakeOnBoard() {
     const newBoard = this.gameBoard.map((row) => row.fill(null));
     this.snake.bodyCoordinates.forEach((snakeCoord) => {
-      newBoard[snakeCoord.row][snakeCoord.col] = "snake";
+      newBoard[snakeCoord.row][snakeCoord.col] = 'snake';
     });
     this.gameBoard = newBoard;
   }

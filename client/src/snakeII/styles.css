@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 #snakes-game-container {
-  background-color: #ffffdd;
+  background-color: #000;
   min-height: 100vh;
   cursor: pointer;
   overflow: hidden;
@@ -9,11 +9,10 @@
 
 #game-title {
   text-align: center;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #000;
+  color: #fff;
   font-size: 2.5rem;
   padding-block: 1.5rem;
-
   font-family: 'VT323', monospace;
 }
 
@@ -40,72 +39,44 @@
   margin-inline: auto;
 }
 
-.score>span:first-child {
-  background-color: #61a3ba;
+.score > span:first-child {
+  background-color: #000;
   color: white;
   padding-block: 0.5rem;
   padding-inline: 1rem 0.3rem;
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
+  font-family: 'VT323', monospace;
 }
 
-.score>span:last-child {
-  background-color: #d2de32;
-  color: #222;
+.score > span:last-child {
+  background-color: #000;
+  color: #fff;
   padding-block: 0.5rem;
   padding-inline: 0.8rem 1rem;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
+  font-family: 'VT323', monospace;
 }
 
 .new-game-hint,
- .skinSelect,
- .leaderBoard,
- .signOut {
+.skinSelect,
+.leaderBoard,
+.signOut {
   text-align: center;
-  color: black;
+  color: white;
   font-weight: 900;
   font-size: 1.5rem;
   animation: teeter 2s linear infinite;
   margin-top: 2rem;
-}
-
-@keyframes teeter {
-
-  0%,
-  50%,
-  100% {
-    transform: rotateZ(0deg);
-  }
-
-  25% {
-    transform: rotateZ(-5deg);
-  }
-
-  75% {
-    transform: rotateZ(5deg);
-  }
-}
-
-.pause-hint {
-  text-align: center;
-  font-style: italic;
-  color: #333;
-}
-
-.pause-hint kbd {
-  display: inline-block;
-  padding: 0.2rem 0.5rem;
-  background-color: #333;
-  color: salmon;
-  border-radius: 0.5rem;
+  font-family: 'VT323', monospace;
 }
 
 #game-over-modal-container {
   position: fixed;
   inset: 0;
   outline: 1px solid red;
-  background-color: #a2c579;
+  background-color: #000;
   cursor: pointer;
 }
 
@@ -114,30 +85,24 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
-
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  font-family: 'VT323', monospace;
   width: 700px;
   height: 300px;
-
   display: grid;
   place-content: center;
   text-align: center;
   border-radius: 10px;
-
   box-shadow: 0 0 10px 5px black, 0 0 100px 10px black;
 }
 
-#game-over-modal>h2 {
+#game-over-modal > h2 {
   font-size: 4em;
 }
 
 .final-score {
   font-size: 1.3em;
-}
-
-.final-score>span {
-  font-weight: 900;
-  font-size: 2rem;
 }
 
 .congratulate {
@@ -153,15 +118,14 @@
 #paused-modal-container {
   position: fixed;
   inset: 0;
-  background-color: hsla(0, 0%, 10%, 0.7);
-
+  background-color: hsla(0deg, 0%, 10%, 0.7);
   cursor: pointer;
 }
 
 #paused-modal {
   width: 500px;
   height: 300px;
-  background-color: #61a3ba;
+  background-color: #000;
   color: white;
   position: absolute;
   top: 50%;
@@ -171,18 +135,13 @@
   place-content: center;
   border-radius: 1rem;
   text-align: center;
+  font-family: 'VT323', monospace;
 }
 
-#paused-modal>h2 {
+#paused-modal > h2 {
   font-size: 3rem;
 }
 
-#paused-modal>.click-dir {
+#paused-modal > .click-dir {
   color: white;
-}
-
-.click-dir {
-  color: hsl(0, 0%, 30%);
-  font-style: italic;
-  font-size: 1.3rem;
 }

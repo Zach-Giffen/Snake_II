@@ -5,12 +5,12 @@ drop schema "public" cascade;
 create schema "public";
 CREATE TABLE "public"."users" (
   "userId" serial PRIMARY KEY,
-  "userName" varchar UNIQUE,
+  "userName" varchar,
   "passwordHash" varchar
 );
 CREATE TABLE "public"."leaderBoard" (
   "leaderBoardId" serial PRIMARY KEY,
-  "userId" integer UNIQUE,
+  "userId" integer,
   "userName" varchar,
   "score" integer
 );
