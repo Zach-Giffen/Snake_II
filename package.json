@@ -7,6 +7,7 @@
   "scripts": {
     "start": "NODE_ENV=production npm start --prefix server",
     "build": "npm run build --prefix client",
+    "preview": "vite preview",
     "db:import": "sh database/import.sh",
     "dev:client": "npm run dev --prefix client",
     "dev:server": "npm run dev --prefix server",
@@ -24,6 +25,7 @@
   "dependencies": {
     "husky": "^8.0.3",
     "npm-run-all": "^4.1.5",
+    "preview": "^0.1.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
@@ -45,6 +47,7 @@
     "prettier": "^2.8.7",
     "stylelint": "^15.4.0",
     "stylelint-config-recommended": "^11.0.0",
-    "stylelint-config-standard": "^32.0.0"
+    "stylelint-config-standard": "^32.0.0",
+    "vite": "^5.0.12"
   }
 }
