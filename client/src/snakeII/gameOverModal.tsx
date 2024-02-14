@@ -1,9 +1,6 @@
 import { addScore } from './data';
 import { HIGH_SCORE_KEY } from './snakeIIGame';
 
-const userName: string = 'snakeGod';
-const userId: number = 1;
-
 interface GameOverModal {
   finalScore: number;
   setIsGameOver: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,7 +22,7 @@ export default function GameOverModal({
     setScore(0);
   };
   const handleScoreSubmit = () => {
-    const newScore = { userId, userName, score: finalScore };
+    const newScore = { score: finalScore };
     addScore(newScore);
     setIsGameOver(false);
     setIsPlaying(true);

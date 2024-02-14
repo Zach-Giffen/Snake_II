@@ -1,6 +1,4 @@
 export type Score = {
-  userId: number;
-  userName: string;
   score: number;
 };
 export type Entry = Score & {
