@@ -8,7 +8,7 @@ type PageType = 'snake' | 'register' | 'sign-in';
 export default function App() {
   // const [serverData, setServerData] = useState('');
 
-  const [page, setPage] = useState<PageType>('register');
+  const [page, setPage] = useState<PageType>('sign-in');
   // useEffect(() => {
   //   async function readServerData() {
   //     const resp = await fetch('/api/hello');

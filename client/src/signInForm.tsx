@@ -1,20 +1,19 @@
-import { type FormEvent, useState } from 'react';
+import { FormEvent, useState, useContext } from 'react';
+import UserContext from './UserContext';
 
-/**
- * Form that signs in a user.
- */
 type Props = {
   onSignIn: () => void;
 };
 export default function SignInForm({ onSignIn }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const userDataContext = useContext(UserContext);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       setIsLoading(true);
       const formData = new FormData(event.currentTarget);
       const userData = Object.fromEntries(formData.entries());
-      console.log(userData);
       const req = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -26,7 +25,9 @@ export default function SignInForm({ onSignIn }: Props) {
       }
       const { user, token } = await res.json();
       sessionStorage.setItem('token', token);
-      console.log('Signed In', user, '; received token:', token);
+      sessionStorage.setItem('userId', user.userId.toString());
+      sessionStorage.setItem('username', user.username);
+      userDataContext.setUserData(user);
       onSignIn();
     } catch (err) {
       alert(`Error signing in: ${err}`);

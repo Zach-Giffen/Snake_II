@@ -1,15 +1,17 @@
 export type Score = {
+  userId: number;
+  userName: string;
   score: number;
 };
 export type Entry = Score & {
   entryId: number;
 };
-
 export async function addScore(entry: Score): Promise<Entry> {
   const req = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     },
     body: JSON.stringify(entry),
   };

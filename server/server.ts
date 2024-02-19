@@ -117,11 +117,9 @@ app.post('/snake/score', authMiddleware, async (req, res, next) => {
   console.log(req.user);
   try {
     const body = req.body;
-    const user = req.user;
     if (!body) return;
     const { score } = body;
-    const { userId, userName } = user;
-    console.log(user);
+    const { userId, userName } = body;
 
     if (!score) {
       throw new ClientError(400, 'missing score');
