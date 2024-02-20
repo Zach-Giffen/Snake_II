@@ -1,9 +1,6 @@
 import { addScore } from './data';
 import { HIGH_SCORE_KEY } from './snakeIIGame';
 
-const userName: string = 'snakeGod';
-const userId: number = 1;
-
 interface GameOverModal {
   finalScore: number;
   setIsGameOver: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +8,7 @@ interface GameOverModal {
   setJustStarted: React.Dispatch<React.SetStateAction<boolean>>;
   setScore: React.Dispatch<React.SetStateAction<number>>;
 }
+
 export default function GameOverModal({
   finalScore,
   setIsGameOver,
@@ -24,13 +22,22 @@ export default function GameOverModal({
     setJustStarted(true);
     setScore(0);
   };
-  const handleScoreSubmit = () => {
-    const newScore = { userId, userName, score: finalScore };
-    addScore(newScore);
-    setIsGameOver(false);
-    setIsPlaying(true);
-    setJustStarted(true);
-    setScore(0);
+  const handleScoreSubmit = async () => {
+    const newScore = {
+      userId: parseInt(sessionStorage.getItem('userId') || '0'),
+      userName: sessionStorage.getItem('username') || '',
+      score: finalScore,
+    };
+
+    try {
+      await addScore(newScore);
+      console.log('Score submitted successfully:', newScore);
+    } catch (error) {
+      console.error('Error submitting score:', error);
+    }
+
+    // Reset game state
+    handleGameReset();
   };
 
   const currentHighScore = Number(localStorage.getItem(HIGH_SCORE_KEY));
@@ -46,7 +53,7 @@ export default function GameOverModal({
         <p className="final-score">
           Your Final Score: <span>{finalScore}</span>
         </p>
-        {finalScore > currentHighScore && (
+        {finalScore < currentHighScore && (
           <div>
             <p>Submit score?</p>
             <p onClick={handleScoreSubmit}>yes?</p>
