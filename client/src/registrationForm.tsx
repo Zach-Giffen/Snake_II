@@ -2,10 +2,12 @@ import { type FormEvent, useState } from 'react';
 
 type RegistrationFormProps = {
   onRegistrationSuccess: () => void;
+  setPage: (page: 'register' | 'snake' | 'sign-in') => void;
 };
 
 export default function RegistrationForm({
   onRegistrationSuccess,
+  setPage,
 }: RegistrationFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,6 +35,10 @@ export default function RegistrationForm({
       setIsLoading(false);
     }
   }
+
+  const pageSwap = () => {
+    setPage('sign-in');
+  };
 
   return (
     <div className="container">
@@ -74,6 +80,7 @@ export default function RegistrationForm({
           </div>
         </div>
       </form>
+      <button onClick={pageSwap}>Sign-In</button>
     </div>
   );
 }

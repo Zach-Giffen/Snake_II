@@ -6,36 +6,27 @@ import SignInForm from './signInForm';
 type PageType = 'snake' | 'register' | 'sign-in';
 
 export default function App() {
-  // const [serverData, setServerData] = useState('');
-
   const [page, setPage] = useState<PageType>('sign-in');
-  // useEffect(() => {
-  //   async function readServerData() {
-  //     const resp = await fetch('/api/hello');
-  //     const data = await resp.json();
 
-  //     console.log('Data from server:', data);
-
-  //     setServerData(data.message);
-  //   }
-
-  //   readServerData();
-  // }, []);
-
-  const handleRegistrationSuccess = () => {
+  const goToSiginIn = () => {
     setPage('sign-in');
   };
 
-  const handleSignInSuccess = () => {
+  const goToSnake = () => {
     setPage('snake');
   };
 
   return (
     <>
       {page === 'register' && (
-        <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
+        <RegistrationForm
+          onRegistrationSuccess={goToSiginIn}
+          setPage={setPage}
+        />
       )}
-      {page === 'sign-in' && <SignInForm onSignIn={handleSignInSuccess} />}
+      {page === 'sign-in' && (
+        <SignInForm onSignIn={goToSnake} setPage={setPage} />
+      )}
       {page === 'snake' && <SnakeGameII />}
     </>
   );

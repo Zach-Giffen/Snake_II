@@ -1,12 +1,12 @@
-import { FormEvent, useState, useContext } from 'react';
-import UserContext from './UserContext';
+import { FormEvent, useState } from 'react';
 
 type Props = {
   onSignIn: () => void;
+  setPage: (page: 'register' | 'snake' | 'sign-in') => void;
 };
-export default function SignInForm({ onSignIn }: Props) {
+
+export default function SignInForm({ onSignIn, setPage }: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const userDataContext = useContext(UserContext);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,7 +27,6 @@ export default function SignInForm({ onSignIn }: Props) {
       sessionStorage.setItem('token', token);
       sessionStorage.setItem('userId', user.userId.toString());
       sessionStorage.setItem('username', user.username);
-      userDataContext.setUserData(user);
       onSignIn();
     } catch (err) {
       alert(`Error signing in: ${err}`);
@@ -35,6 +34,10 @@ export default function SignInForm({ onSignIn }: Props) {
       setIsLoading(false);
     }
   }
+
+  const pageSwap = () => {
+    setPage('register');
+  };
 
   return (
     <div className="container">
@@ -76,6 +79,7 @@ export default function SignInForm({ onSignIn }: Props) {
           </div>
         </div>
       </form>
+      <button onClick={pageSwap}>Register</button>
     </div>
   );
 }
