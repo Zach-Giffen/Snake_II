@@ -6,6 +6,19 @@ export type Score = {
 export type Entry = Score & {
   entryId: number;
 };
+
+export async function readLeaderBoard(): Promise<Entry[]> {
+  const req = {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    },
+  };
+  const res = await fetch('/snake/score', req);
+  if (!res.ok) throw new Error(`fetch Error ${res.status}`);
+  return await res.json();
+}
+
 export async function addScore(entry: Score): Promise<Entry> {
   const req = {
     method: 'POST',

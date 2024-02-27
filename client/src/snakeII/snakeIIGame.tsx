@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SnakeBoard from './snakeBoard';
 import GameOverModal from './gameOverModal';
 import PausedModal from './pausedModal';
+import { Entry, readLeaderBoard } from './data';
 
 import './styles.css';
 
@@ -12,6 +13,8 @@ export default function SnakeGameII() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [justStarted, setJustStarted] = useState(true);
+  const [checkLeaderBoard, setCheckLeaderBoard] = useState(false);
+  const [entries, setEntries] = useState<Entry[]>();
 
   if (localStorage.getItem(HIGH_SCORE_KEY) === null) {
     localStorage.setItem(HIGH_SCORE_KEY, '0');
@@ -23,11 +26,20 @@ export default function SnakeGameII() {
       setIsPlaying(true);
       setJustStarted(false);
       setScore(0);
-
       return;
     }
-
     !isGameOver && setIsPlaying(!isPlaying);
+  };
+
+  const handleLeaderBoard = async () => {
+    try {
+      setCheckLeaderBoard(true);
+      const entries = await readLeaderBoard();
+      setEntries(entries);
+      console.log('hello');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -71,8 +83,56 @@ export default function SnakeGameII() {
         : !isGameOver &&
           !isPlaying && <PausedModal setIsPlaying={setIsPlaying} />}
       {justStarted ? <p className="skinSelect">Skin</p> : <></>}
-      {justStarted ? <p className="leaderBoard">Leader Board</p> : <></>}
+      {justStarted ? (
+        <p className="leaderBoard" onClick={handleLeaderBoard}>
+          Leader Board
+        </p>
+      ) : (
+        <></>
+      )}
       {justStarted ? <p className="signOut">Sign Out</p> : <></>}
+
+      {checkLeaderBoard ? (
+        <div className="row">
+          <div className="column-full">
+            <table className="entry-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Name</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries &&
+                  entries.map((entry, index) => (
+                    <EntryMap
+                      key={entry.entryId}
+                      entry={entry}
+                      rank={index + 1}
+                    />
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
+  );
+}
+type EntryProps = {
+  entry: Entry;
+  rank: number;
+};
+
+function EntryMap({ entry, rank }: EntryProps) {
+  return (
+    <tr>
+      <td>{rank}</td>
+      <td>{entry.userName}</td>
+      <td>{entry.score}</td>
+    </tr>
   );
 }
