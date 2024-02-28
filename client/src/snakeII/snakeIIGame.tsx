@@ -34,12 +34,18 @@ export default function SnakeGameII() {
   const handleLeaderBoard = async () => {
     try {
       setCheckLeaderBoard(true);
+      console.log(checkLeaderBoard);
       const entries = await readLeaderBoard();
+      console.log(entries);
       setEntries(entries);
       console.log('hello');
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const leaderBoardOff = () => {
+    setCheckLeaderBoard(false);
   };
 
   return (
@@ -115,6 +121,7 @@ export default function SnakeGameII() {
               </tbody>
             </table>
           </div>
+          <button onClick={leaderBoardOff}>back</button>
         </div>
       ) : (
         <></>

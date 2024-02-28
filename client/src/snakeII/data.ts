@@ -14,7 +14,8 @@ export async function readLeaderBoard(): Promise<Entry[]> {
       Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     },
   };
-  const res = await fetch('/snake/score', req);
+  const res = await fetch('/api/snake/score', req);
+  console.log('hello');
   if (!res.ok) throw new Error(`fetch Error ${res.status}`);
   return await res.json();
 }

@@ -46,10 +46,6 @@ app.use(express.static(reactStaticDir));
 app.use(express.static(uploadsStaticDir));
 app.use(express.json());
 
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello, World!' });
-});
-
 app.post('/api/auth/sign-up', async (req, res, next) => {
   try {
     const { username, password } = req.body as Partial<Auth>;
@@ -76,6 +72,7 @@ app.post('/api/auth/sign-up', async (req, res, next) => {
 });
 
 app.post('/api/auth/sign-in', async (req, res, next) => {
+  console.log('sign in');
   try {
     const { username, password } = req.body as Partial<Auth>;
     if (!username || !password) {
@@ -137,13 +134,15 @@ app.post('/snake/score', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.get('/snake/score', authMiddleware, async (req, res, next) => {
+app.get('/api/snake/score', authMiddleware, async (req, res, next) => {
+  console.log('hello');
   try {
     const sql = `
       select "userId", "userName", "score" from "leaderBoard"
         order by "score" desc;
     `;
     const result = await db.query<User>(sql);
+    console.log(result.rows);
     res.status(201).json(result.rows);
   } catch (err) {
     next(err);
