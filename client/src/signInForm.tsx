@@ -40,7 +40,7 @@ export default function SignInForm({ onSignIn, setPage }: Props) {
   };
 
   return (
-    <div className="container">
+    <div className="signIn">
       <div className="row">
         <div className="column-full d-flex justify-between">
           <h1>Sign In</h1>
@@ -50,16 +50,17 @@ export default function SignInForm({ onSignIn, setPage }: Props) {
         <div className="row margin-bottom-1">
           <div className="column-half">
             <label className="margin-bottom-1 d-block">
-              Username
+              Username:
               <input
                 required
                 name="username"
                 type="text"
                 className="input-b-color text-padding input-b-radius purple-outline input-height margin-bottom-2 d-block width-100"
               />
+              <br></br>
             </label>
             <label className="margin-bottom-1 d-block">
-              Password
+              Password:
               <input
                 required
                 name="password"
@@ -71,15 +72,15 @@ export default function SignInForm({ onSignIn, setPage }: Props) {
         </div>
         <div className="row">
           <div className="column-full d-flex justify-between">
-            <button
-              disabled={isLoading}
-              className="input-b-radius text-padding purple-background white-text">
+            <button disabled={isLoading} className="signInButton">
               Sign In
+            </button>
+            <button className="signInSwap" onClick={pageSwap}>
+              Register
             </button>
           </div>
         </div>
       </form>
-      <button onClick={pageSwap}>Register</button>
     </div>
   );
 }

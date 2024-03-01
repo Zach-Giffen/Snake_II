@@ -17,17 +17,18 @@
 }
 
 .high-score {
-  background-color: #d2de32;
+  background-color: #fff;
   color: black;
   font-variant: small-caps;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 900;
   width: fit-content;
   margin-inline: auto;
   margin-top: 1rem;
   padding: 0.2rem 1rem;
   border-radius: 1rem;
+  font-family: 'VT323', monospace;
 }
 
 .score {
@@ -153,6 +154,16 @@
 
 .entry-table {
   color: #fff;
+  font-family: 'VT323', monospace;
+  font-size: 2rem;
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+}
+
+th,
+td {
+  border: 4px solid white;
 }
 
 /* .click-dir {
@@ -160,3 +171,53 @@
   font-style: italic;
   font-size: 1.3rem;
 } */
+
+button {
+  font-family: 'VT323', monospace;
+}
+
+.backButton {
+  font-size: 2rem;
+  margin-left: 10%;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.signUp,
+.signIn {
+  background: black;
+  color: white;
+  padding-bottom: 1000%;
+  font-family: 'VT323', monospace;
+  font-size: xx-large;
+  padding-left: 45%;
+
+  input:is(input) {
+    margin-left: 10px;
+  }
+}
+
+.signUp {
+  h1:is(h1) {
+    margin-left: 6.5%;
+  }
+}
+
+.signIn {
+  h1:is(h1) {
+    margin-left: 8%;
+  }
+}
+
+.signInButton,
+.signInSwap,
+.signUpButton,
+.signUpSwap {
+  font-size: 2rem;
+  margin-right: 42px;
+  margin-top: 20px;
+  margin-left: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}

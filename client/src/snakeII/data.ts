@@ -15,7 +15,6 @@ export async function readLeaderBoard(): Promise<Entry[]> {
     },
   };
   const res = await fetch('/api/snake/score', req);
-  console.log('hello');
   if (!res.ok) throw new Error(`fetch Error ${res.status}`);
   return await res.json();
 }

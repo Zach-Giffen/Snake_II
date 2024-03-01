@@ -34,11 +34,8 @@ export default function SnakeGameII() {
   const handleLeaderBoard = async () => {
     try {
       setCheckLeaderBoard(true);
-      console.log(checkLeaderBoard);
       const entries = await readLeaderBoard();
-      console.log(entries);
       setEntries(entries);
-      console.log('hello');
     } catch (err) {
       console.error(err);
     }
@@ -51,19 +48,28 @@ export default function SnakeGameII() {
   return (
     <div id="snakes-game-container">
       <h1 id="game-title">SnakeII</h1>
-      <p className="high-score">High Score: {highScore}</p>
 
-      {justStarted ? (
+      {!checkLeaderBoard ? (
+        <p className="high-score">High Score: {highScore}</p>
+      ) : (
+        <button className="backButton" onClick={leaderBoardOff}>
+          back
+        </button>
+      )}
+
+      {justStarted && !checkLeaderBoard ? (
         <p className="new-game-hint" onClick={handleStartClick}>
           Start Game
         </p>
-      ) : (
+      ) : !checkLeaderBoard ? (
         <>
           <p className="score">
             <span>Score</span>
             <span>{score}</span>
           </p>
         </>
+      ) : (
+        <></>
       )}
       {!isGameOver && !justStarted && (
         <SnakeBoard
@@ -88,15 +94,23 @@ export default function SnakeGameII() {
         ? ''
         : !isGameOver &&
           !isPlaying && <PausedModal setIsPlaying={setIsPlaying} />}
-      {justStarted ? <p className="skinSelect">Skin</p> : <></>}
-      {justStarted ? (
+      {justStarted && !checkLeaderBoard ? (
+        <p className="skinSelect">Skin</p>
+      ) : (
+        <></>
+      )}
+      {justStarted && !checkLeaderBoard ? (
         <p className="leaderBoard" onClick={handleLeaderBoard}>
           Leader Board
         </p>
       ) : (
         <></>
       )}
-      {justStarted ? <p className="signOut">Sign Out</p> : <></>}
+      {justStarted && !checkLeaderBoard ? (
+        <p className="signOut">Sign Out</p>
+      ) : (
+        <></>
+      )}
 
       {checkLeaderBoard ? (
         <div className="row">
@@ -121,7 +135,6 @@ export default function SnakeGameII() {
               </tbody>
             </table>
           </div>
-          <button onClick={leaderBoardOff}>back</button>
         </div>
       ) : (
         <></>

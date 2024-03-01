@@ -16,6 +16,5 @@ export function authMiddleware(
     throw new ClientError(401, 'authentication required');
   }
   req.user = jwt.verify(token, secret) as Request['user'];
-  console.log('authmiddle');
   next();
 }

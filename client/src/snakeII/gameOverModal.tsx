@@ -31,7 +31,6 @@ export default function GameOverModal({
 
     try {
       await addScore(newScore);
-      console.log('Score submitted successfully:', newScore);
     } catch (error) {
       console.error('Error submitting score:', error);
     }
