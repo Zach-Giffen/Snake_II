@@ -13,4 +13,4 @@
 insert into "users"
         ("userName", "passwordHash")
         values
-        ('snakeGod',`'fasfkil;gdfaf');
+        ('snakeGod','fasfkil;gdfaf');
