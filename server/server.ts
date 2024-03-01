@@ -46,10 +46,6 @@ app.use(express.static(reactStaticDir));
 app.use(express.static(uploadsStaticDir));
 app.use(express.json());
 
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello, World!' });
-});
-
 app.post('/api/auth/sign-up', async (req, res, next) => {
   try {
     const { username, password } = req.body as Partial<Auth>;
@@ -105,16 +101,7 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
   }
 });
 
-/*
- * Middleware that handles paths that aren't handled by static middleware
- * or API route handlers.
- * This must be the _last_ non-error middleware installed, after all the
- * get/post/put/etc. route handlers and just before errorMiddleware.
- */
-
 app.post('/snake/score', authMiddleware, async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.user);
   try {
     const body = req.body;
     if (!body) return;
@@ -130,7 +117,6 @@ app.post('/snake/score', authMiddleware, async (req, res, next) => {
     if (!userName) {
       throw new ClientError(400, 'missing userName');
     }
-    console.log(body);
     const sql = `
       insert into "leaderBoard" ("userId", "userName", "score")
         values ($1, $2, $3)
@@ -138,12 +124,23 @@ app.post('/snake/score', authMiddleware, async (req, res, next) => {
     `;
     const result = await db.query(sql, [userId, userName, score]);
     const entry = result.rows[0];
-    console.log(entry);
     if (!entry) {
       throw new ClientError(500, 'Failed to insert into database');
     }
-
     res.status(201).json(entry);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/snake/score', authMiddleware, async (req, res, next) => {
+  try {
+    const sql = `
+      select "userId", "userName", "score" from "leaderBoard"
+        order by "score" desc;
+    `;
+    const result = await db.query<User>(sql);
+    res.status(201).json(result.rows);
   } catch (err) {
     next(err);
   }

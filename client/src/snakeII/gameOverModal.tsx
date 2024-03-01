@@ -31,7 +31,6 @@ export default function GameOverModal({
 
     try {
       await addScore(newScore);
-      console.log('Score submitted successfully:', newScore);
     } catch (error) {
       console.error('Error submitting score:', error);
     }
@@ -53,7 +52,7 @@ export default function GameOverModal({
         <p className="final-score">
           Your Final Score: <span>{finalScore}</span>
         </p>
-        {finalScore < currentHighScore && (
+        {finalScore > currentHighScore && (
           <div>
             <p>Submit score?</p>
             <p onClick={handleScoreSubmit}>yes?</p>
