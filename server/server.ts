@@ -22,6 +22,12 @@ type Auth = {
   password: string;
 };
 
+type Entry = {
+  entryId: number;
+  userName: string;
+  score: number;
+};
+
 const hashKey = process.env.TOKEN_SECRET;
 if (!hashKey) throw new Error('TOKEN_SECRET not found in .env');
 
@@ -141,6 +147,30 @@ app.get('/api/snake/score', authMiddleware, async (req, res, next) => {
     `;
     const result = await db.query<User>(sql);
     res.status(201).json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.put('/snake/score/entryId', authMiddleware, async (req, res, next) => {
+  try {
+    const { userName, score } = req.body as Partial<Entry>;
+    if (!userName || !score) {
+      throw new ClientError(400, 'userName, and score are required fields');
+    }
+    const sql = `
+      update "leaderBoard"
+        set "score" = $1
+        where "userName" = $2
+        returning *;
+    `;
+    const params = [score, userName];
+    const result = await db.query<Entry>(sql, params);
+    const [entry] = result.rows;
+    if (!entry) {
+      throw new ClientError(404, `User with username ${userName} not found`);
+    }
+    res.status(201).json(entry);
   } catch (err) {
     next(err);
   }
