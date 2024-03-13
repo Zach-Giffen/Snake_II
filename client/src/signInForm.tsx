@@ -28,6 +28,7 @@ export default function SignInForm({ onSignIn, setPage }: Props) {
       sessionStorage.setItem('userId', user.userId.toString());
       sessionStorage.setItem('username', user.username);
       onSignIn();
+      localStorage.setItem('guest', 'no');
     } catch (err) {
       alert(`Error signing in: ${err}`);
     } finally {
@@ -37,6 +38,11 @@ export default function SignInForm({ onSignIn, setPage }: Props) {
 
   const pageSwap = () => {
     setPage('register');
+  };
+
+  const handleGuest = () => {
+    setPage('snake');
+    localStorage.setItem('guest', 'yes');
   };
 
   return (
@@ -79,6 +85,9 @@ export default function SignInForm({ onSignIn, setPage }: Props) {
               Register
             </button>
           </div>
+          <button className="guest" onClick={handleGuest}>
+            Continue as guest
+          </button>
         </div>
       </form>
     </div>
