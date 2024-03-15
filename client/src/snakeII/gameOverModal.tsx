@@ -39,8 +39,7 @@ export default function GameOverModal({
     handleGameReset();
   };
 
-  // const currentHighScore = Number(localStorage.getItem(HIGH_SCORE_KEY));
-  const currentHighScore = Number(10);
+  const currentHighScore = Number(localStorage.getItem(HIGH_SCORE_KEY));
   const highScoreBeaten = finalScore > currentHighScore;
   if (highScoreBeaten) {
     localStorage.setItem(HIGH_SCORE_KEY, finalScore.toString());
