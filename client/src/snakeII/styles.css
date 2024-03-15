@@ -221,3 +221,12 @@ button {
   padding-left: 5px;
   padding-right: 5px;
 }
+
+.guest {
+  font-size: 2rem;
+  margin-right: 42px;
+  margin-top: 20px;
+  margin-left: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
