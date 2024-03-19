@@ -152,6 +152,25 @@ app.get('/api/snake/score', authMiddleware, async (req, res, next) => {
   }
 });
 
+app.get('/api/snake/score/:userId', authMiddleware, async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const sql = `
+      SELECT "score" FROM "leaderBoard"
+      WHERE "userId" = $1;
+    `;
+    const result = await db.query<{ score: number }>(sql, [userId]);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: 'User not found in leaderboard' });
+    } else {
+      res.status(200).json({ score: result.rows[0].score });
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.put('/snake/score/entryId', authMiddleware, async (req, res, next) => {
   try {
     const { userName, score } = req.body as Partial<Entry>;

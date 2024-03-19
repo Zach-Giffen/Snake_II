@@ -1,4 +1,6 @@
 import { addScore } from './data';
+import { getUserScore } from './data';
+import { updateScore } from './data';
 import { HIGH_SCORE_KEY } from './snakeIIGame';
 
 interface GameOverModal {
@@ -22,15 +24,23 @@ export default function GameOverModal({
     setJustStarted(true);
     setScore(0);
   };
+
   const handleScoreSubmit = async () => {
+    const userId = parseInt(sessionStorage.getItem('userId') || '0');
+    const userName = sessionStorage.getItem('username') || '';
     const newScore = {
-      userId: parseInt(sessionStorage.getItem('userId') || '0'),
-      userName: sessionStorage.getItem('username') || '',
+      userId: userId,
+      userName: userName,
       score: finalScore,
     };
 
     try {
-      await addScore(newScore);
+      const existingUserScore = await getUserScore(userId);
+      if (existingUserScore !== undefined && !isNaN(existingUserScore)) {
+        await updateScore(newScore);
+      } else {
+        await addScore(newScore);
+      }
     } catch (error) {
       console.error('Error submitting score:', error);
     }
