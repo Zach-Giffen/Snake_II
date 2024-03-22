@@ -1,7 +1,5 @@
-import { addScore } from './data';
-import { getUserScore } from './data';
-import { updateScore } from './data';
-import { HIGH_SCORE_KEY } from './snakeIIGame';
+import { useEffect, useState } from 'react';
+import { addScore, getUserScore, updateScore } from './data';
 
 interface GameOverModal {
   finalScore: number;
@@ -18,6 +16,24 @@ export default function GameOverModal({
   setJustStarted,
   setScore,
 }: GameOverModal) {
+  const [currentHighScore, setCurrentHighScore] = useState<
+    number | undefined
+  >();
+
+  useEffect(() => {
+    const fetchHighScore = async () => {
+      try {
+        const userId = parseInt(sessionStorage.getItem('userId') || '0', 10);
+        const existingUserScore = await getUserScore(userId);
+        setCurrentHighScore(Number(existingUserScore));
+      } catch (error) {
+        console.error('Error fetching high score:', error);
+      }
+    };
+
+    fetchHighScore();
+  }, []);
+
   const handleGameReset = () => {
     setIsGameOver(false);
     setIsPlaying(true);
@@ -35,8 +51,7 @@ export default function GameOverModal({
     };
 
     try {
-      const existingUserScore = await getUserScore(userId);
-      if (existingUserScore !== undefined && !isNaN(existingUserScore)) {
+      if (currentHighScore !== undefined && !isNaN(currentHighScore)) {
         await updateScore(newScore);
       } else {
         await addScore(newScore);
@@ -45,15 +60,9 @@ export default function GameOverModal({
       console.error('Error submitting score:', error);
     }
 
-    // Reset game state
     handleGameReset();
   };
 
-  const currentHighScore = Number(localStorage.getItem(HIGH_SCORE_KEY));
-  const highScoreBeaten = finalScore > currentHighScore;
-  if (highScoreBeaten) {
-    localStorage.setItem(HIGH_SCORE_KEY, finalScore.toString());
-  }
   const guest = String(localStorage.getItem('guest'));
 
   return (
@@ -63,18 +72,19 @@ export default function GameOverModal({
         <p className="final-score">
           Your Final Score: <span>{finalScore}</span>
         </p>
-        {guest === 'no' && finalScore > currentHighScore && (
+        {guest === 'no' && finalScore > (currentHighScore || 0) && (
           <div>
             <p>Submit score?</p>
             <p onClick={handleScoreSubmit}>yes?</p>
             <p onClick={handleGameReset}>no?</p>
           </div>
         )}
-        {(guest === 'yes' || finalScore <= currentHighScore) && (
-          <p className="click-dir" onClick={handleGameReset}>
-            (Click here to continue)
-          </p>
-        )}
+        {guest === 'yes' ||
+          (finalScore <= (currentHighScore || 0) && (
+            <p className="click-dir" onClick={handleGameReset}>
+              (Click here to continue)
+            </p>
+          ))}
       </div>
     </div>
   );
