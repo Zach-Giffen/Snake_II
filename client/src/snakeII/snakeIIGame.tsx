@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SnakeBoard from './snakeBoard';
 import GameOverModal from './gameOverModal';
 import PausedModal from './pausedModal';
-import { Entry, readLeaderBoard } from './data';
+import { Entry, readLeaderBoard, getUserScore } from './data';
 
 import './styles.css';
 
@@ -15,11 +15,30 @@ export default function SnakeGameII() {
   const [justStarted, setJustStarted] = useState(true);
   const [checkLeaderBoard, setCheckLeaderBoard] = useState(false);
   const [entries, setEntries] = useState<Entry[]>();
+  const [currentHighScore, setCurrentHighScore] = useState<
+    number | undefined
+  >();
 
-  if (localStorage.getItem(HIGH_SCORE_KEY) === null) {
-    localStorage.setItem(HIGH_SCORE_KEY, '0');
-  }
-  const highScore = Number(localStorage.getItem(HIGH_SCORE_KEY));
+  useEffect(() => {
+    const fetchHighScore = async () => {
+      try {
+        const userId = parseInt(sessionStorage.getItem('userId') || '0', 10);
+        const guest = String(localStorage.getItem('guest'));
+        if (guest === 'no') {
+          const existingUserScore = await getUserScore(userId);
+          setCurrentHighScore(Number(existingUserScore) || 0);
+        } else {
+          setCurrentHighScore(0);
+        }
+      } catch (error) {
+        console.error('Error fetching high score:', error);
+      }
+    };
+
+    fetchHighScore();
+  }, []);
+
+  const highScore = currentHighScore !== undefined ? currentHighScore : 0;
 
   const handleStartClick = () => {
     if (justStarted) {
