@@ -63,7 +63,7 @@ export default function GameOverModal({
     handleGameReset();
   };
 
-  const guest = String(localStorage.getItem('guest'));
+  const guest = String(sessionStorage.getItem('guest'));
 
   return (
     <div id="game-over-modal-container">
@@ -72,19 +72,17 @@ export default function GameOverModal({
         <p className="final-score">
           Your Final Score: <span>{finalScore}</span>
         </p>
-        {guest === 'no' && finalScore > (currentHighScore || 0) && (
+        {guest === 'no' && finalScore > (currentHighScore || 0) ? (
           <div>
             <p>Submit score?</p>
             <p onClick={handleScoreSubmit}>yes?</p>
             <p onClick={handleGameReset}>no?</p>
           </div>
+        ) : (
+          <p className="click-dir" onClick={handleGameReset}>
+            (Click here to continue)
+          </p>
         )}
-        {guest === 'yes' ||
-          (finalScore <= (currentHighScore || 0) && (
-            <p className="click-dir" onClick={handleGameReset}>
-              (Click here to continue)
-            </p>
-          ))}
       </div>
     </div>
   );

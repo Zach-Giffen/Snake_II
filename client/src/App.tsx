@@ -27,7 +27,9 @@ export default function App() {
       {page === 'sign-in' && (
         <SignInForm onSignIn={goToSnake} setPage={setPage} />
       )}
-      {page === 'snake' && <SnakeGameII />}
+      {page === 'snake' && (
+        <SnakeGameII OnSignOut={goToSiginIn} setPage={setPage} />
+      )}
     </>
   );
 }
