@@ -28,7 +28,7 @@ export default function SignInForm({ onSignIn, setPage }: Props) {
       sessionStorage.setItem('userId', user.userId.toString());
       sessionStorage.setItem('username', user.username);
       onSignIn();
-      localStorage.setItem('guest', 'no');
+      sessionStorage.setItem('guest', 'no');
     } catch (err) {
       alert(`Error signing in: ${err}`);
     } finally {
@@ -42,7 +42,7 @@ export default function SignInForm({ onSignIn, setPage }: Props) {
 
   const handleGuest = () => {
     setPage('snake');
-    localStorage.setItem('guest', 'yes');
+    sessionStorage.setItem('guest', 'yes');
   };
 
   return (

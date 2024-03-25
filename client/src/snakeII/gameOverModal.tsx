@@ -1,5 +1,5 @@
-import { addScore } from './data';
-import { HIGH_SCORE_KEY } from './snakeIIGame';
+import { useEffect, useState } from 'react';
+import { addScore, getUserScore, updateScore } from './data';
 
 interface GameOverModal {
   finalScore: number;
@@ -16,35 +16,54 @@ export default function GameOverModal({
   setJustStarted,
   setScore,
 }: GameOverModal) {
+  const [currentHighScore, setCurrentHighScore] = useState<
+    number | undefined
+  >();
+
+  useEffect(() => {
+    const fetchHighScore = async () => {
+      try {
+        const userId = parseInt(sessionStorage.getItem('userId') || '0', 10);
+        const existingUserScore = await getUserScore(userId);
+        setCurrentHighScore(Number(existingUserScore));
+      } catch (error) {
+        console.error('Error fetching high score:', error);
+      }
+    };
+
+    fetchHighScore();
+  }, []);
+
   const handleGameReset = () => {
     setIsGameOver(false);
     setIsPlaying(true);
     setJustStarted(true);
     setScore(0);
   };
+
   const handleScoreSubmit = async () => {
+    const userId = parseInt(sessionStorage.getItem('userId') || '0');
+    const userName = sessionStorage.getItem('username') || '';
     const newScore = {
-      userId: parseInt(sessionStorage.getItem('userId') || '0'),
-      userName: sessionStorage.getItem('username') || '',
+      userId: userId,
+      userName: userName,
       score: finalScore,
     };
 
     try {
-      await addScore(newScore);
+      if (currentHighScore !== undefined && !isNaN(currentHighScore)) {
+        await updateScore(newScore);
+      } else {
+        await addScore(newScore);
+      }
     } catch (error) {
       console.error('Error submitting score:', error);
     }
 
-    // Reset game state
     handleGameReset();
   };
 
-  const currentHighScore = Number(localStorage.getItem(HIGH_SCORE_KEY));
-  const highScoreBeaten = finalScore > currentHighScore;
-  if (highScoreBeaten) {
-    localStorage.setItem(HIGH_SCORE_KEY, finalScore.toString());
-  }
-  const guest = String(localStorage.getItem('guest'));
+  const guest = String(sessionStorage.getItem('guest'));
 
   return (
     <div id="game-over-modal-container">
@@ -53,14 +72,13 @@ export default function GameOverModal({
         <p className="final-score">
           Your Final Score: <span>{finalScore}</span>
         </p>
-        {guest === 'no' && finalScore > currentHighScore && (
+        {guest === 'no' && finalScore > (currentHighScore || 0) ? (
           <div>
             <p>Submit score?</p>
             <p onClick={handleScoreSubmit}>yes?</p>
             <p onClick={handleGameReset}>no?</p>
           </div>
-        )}
-        {(guest === 'yes' || finalScore <= currentHighScore) && (
+        ) : (
           <p className="click-dir" onClick={handleGameReset}>
             (Click here to continue)
           </p>

@@ -1,25 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SnakeBoard from './snakeBoard';
 import GameOverModal from './gameOverModal';
 import PausedModal from './pausedModal';
-import { Entry, readLeaderBoard } from './data';
+import { Entry, readLeaderBoard, getUserScore } from './data';
 
 import './styles.css';
 
-export const HIGH_SCORE_KEY = 'high-score';
+type SnakeProps = {
+  OnSignOut: () => void;
+  setPage: (page: 'register' | 'snake' | 'sign-in') => void;
+};
 
-export default function SnakeGameII() {
+export default function SnakeGameII({ OnSignOut, setPage }: SnakeProps) {
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [justStarted, setJustStarted] = useState(true);
   const [checkLeaderBoard, setCheckLeaderBoard] = useState(false);
   const [entries, setEntries] = useState<Entry[]>();
+  const [currentHighScore, setCurrentHighScore] = useState<
+    number | undefined
+  >();
 
-  if (localStorage.getItem(HIGH_SCORE_KEY) === null) {
-    localStorage.setItem(HIGH_SCORE_KEY, '0');
-  }
-  const highScore = Number(localStorage.getItem(HIGH_SCORE_KEY));
+  useEffect(() => {
+    const fetchHighScore = async () => {
+      try {
+        const userId = parseInt(sessionStorage.getItem('userId') || '0', 10);
+        const guest = String(sessionStorage.getItem('guest'));
+        if (guest === 'no') {
+          const existingUserScore = await getUserScore(userId);
+          setCurrentHighScore(Number(existingUserScore) || 0);
+        } else {
+          setCurrentHighScore(0);
+        }
+      } catch (error) {
+        console.error('Error fetching high score:', error);
+      }
+    };
+
+    fetchHighScore();
+
+    const intrevalId = setInterval(fetchHighScore, 500);
+
+    return () => clearInterval(intrevalId);
+  }, []);
+
+  const highScore = currentHighScore !== undefined ? currentHighScore : 0;
 
   const handleStartClick = () => {
     if (justStarted) {
@@ -45,6 +71,11 @@ export default function SnakeGameII() {
     setCheckLeaderBoard(false);
   };
 
+  const handleSignOut = () => {
+    sessionStorage.clear();
+    OnSignOut();
+    setPage('sign-in');
+  };
   return (
     <div id="snakes-game-container">
       <h1 id="game-title">SnakeII</h1>
@@ -107,7 +138,9 @@ export default function SnakeGameII() {
         <></>
       )}
       {justStarted && !checkLeaderBoard ? (
-        <p className="signOut">Sign Out</p>
+        <p className="signOut" onClick={handleSignOut}>
+          Sign Out
+        </p>
       ) : (
         <></>
       )}
